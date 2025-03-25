@@ -1,12 +1,13 @@
 [project]
 name = "chimereceline"
 version = "0.1.0"
-description = ""
+description = "Get IRCELINE data and compare them with CHIMERE outputs"
+license = { file = "LICENSE" }
 authors = [
     {name = "Tristan Carion",email = "tristancarion@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.7"
 dependencies = [
 ]
 
