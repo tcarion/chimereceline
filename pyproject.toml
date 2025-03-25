@@ -7,13 +7,27 @@ authors = [
     {name = "Tristan Carion",email = "tristancarion@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 dependencies = [
+    "requests (>=2.32.3,<3.0.0)",
+    "pathlib (>=1.0.1,<2.0.0)"
 ]
 
 [tool.poetry]
 packages = [{include = "chimereceline", from = "src"}]
 
+include = [
+    { path = "resources", format = "sdist" },
+]
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.15.0"
+types-requests = "^2.32.0.20250306"
+pytest = "^8.3.5"
+
+[tool.pyright]
+typeCheckingMode = "off"
+ignore = ["*"]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
