@@ -13,3 +13,6 @@ def test_station_create():
 
     stations = generate_stations()
     assert stations[0] == station
+
+    label = station.label
+    assert label == station.code + " - " + station.location_name
