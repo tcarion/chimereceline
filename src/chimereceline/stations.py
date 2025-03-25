@@ -1,12 +1,14 @@
 from dataclasses import dataclass
-from typing import Any, Dict
+from typing import Any, Dict, List
+
+from chimereceline.utils import read_stations
 
 
 @dataclass(frozen=True)
 class Station:
     lon: float
     lat: float
-    height: float
+    height: float | None
     id: int
     label: str
 
@@ -19,7 +21,11 @@ class Station:
         return cls(
             lon=coordinates[0],
             lat=coordinates[1],
-            height=float(coordinates[2]) if coordinates[2] != "NaN" else float("nan"),
+            height=float(coordinates[2]) if coordinates[2] != "NaN" else None,
             id=properties["id"],
             label=properties["label"],
         )
+
+
+def generate_stations() -> List[Station]:
+    return [Station.from_dict(station) for station in read_stations()]

@@ -1,4 +1,5 @@
 import json
+from importlib.resources import files
 
 import requests
 from requests.exceptions import HTTPError
@@ -32,5 +33,11 @@ def retrieve_stations() -> dict:
 
 
 def read_stations():
-    with open(STATIONS_FILE) as f:
-        return json.load(f)
+    rawdata = (
+        files("chimereceline.resources")
+        .joinpath("stations.json")
+        .read_text(encoding="utf-8")
+    )
+    return json.loads(rawdata)
+    # with open(STATIONS_FILE) as f:
+    #     return json.load(f)

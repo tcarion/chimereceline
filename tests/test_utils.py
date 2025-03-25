@@ -1,12 +1,5 @@
-from importlib import reload
-
 import pytest
 
-## TODO: remove these lines
-import chimereceline.utils
-
-reload(chimereceline.utils)
-reload(chimereceline.constants)
 from chimereceline.constants import API_SOS_URL
 from chimereceline.utils import _req_get, read_stations, retrieve_stations
 
