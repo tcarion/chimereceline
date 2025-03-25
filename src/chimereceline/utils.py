@@ -4,7 +4,7 @@ from importlib.resources import files
 import requests
 from requests.exceptions import HTTPError
 
-from chimereceline.constants import API_SOS_URL, STATIONS_FILE
+from chimereceline.constants import API_SOS_URL
 
 
 def try_request(func):
@@ -39,5 +39,3 @@ def read_stations():
         .read_text(encoding="utf-8")
     )
     return json.loads(rawdata)
-    # with open(STATIONS_FILE) as f:
-    #     return json.load(f)
