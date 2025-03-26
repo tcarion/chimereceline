@@ -1,6 +1,6 @@
 import re
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Literal
 
 from chimereceline.utils import read_stations
 
@@ -14,8 +14,8 @@ class Station:
     height: float | None
     id: int
     label: str
-    location_name: str | None
-    code: str | None
+    location_name: str | Literal[""]
+    code: str | Literal[""]
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Station":
@@ -24,13 +24,13 @@ class Station:
         coordinates = data["geometry"]["coordinates"]
         label = properties["label"]
         m = re.match(label_pattern, label)
-        code, location_name = m.groups() if m is not None else (None, None)
+        code, location_name = m.groups() if m is not None else ("", "")
 
         return cls(
             lon=coordinates[0],
             lat=coordinates[1],
             height=float(coordinates[2]) if coordinates[2] != "NaN" else None,
-            id=properties["id"],
+            id=int(properties["id"]),
             label=label,
             location_name=location_name,
             code=code,

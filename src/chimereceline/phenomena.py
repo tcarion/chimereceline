@@ -1,4 +1,3 @@
-import re
 from dataclasses import dataclass
 from typing import Any, Dict, List
 
@@ -12,7 +11,7 @@ class Phenomenon:
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Phenomenon":
-        return cls(id=data["id"], label=data["label"])
+        return cls(id=int(data["id"]), label=data["label"])
 
 
 def generate_phenomena() -> List[Phenomenon]:

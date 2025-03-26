@@ -1,5 +1,6 @@
 import pytest
 
+from chimereceline.collection import SosCollection
 from chimereceline.stations import Station, generate_stations
 from chimereceline.utils import read_stations
 
@@ -16,3 +17,9 @@ def test_station_create():
 
     label = station.label
     assert label == station.code + " - " + station.location_name
+
+
+def test_collection():
+    coll = SosCollection()
+    assert coll.search_station("Houtem")[0].id == 1202
+    assert coll.search_phenomenon("Black Carbon")[0].id == 391
