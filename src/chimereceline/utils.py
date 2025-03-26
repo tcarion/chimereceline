@@ -22,8 +22,8 @@ def try_request(func):
 
 
 @try_request
-def _req_get(url: str):
-    stations_response = requests.get(url)
+def _req_get(*args, **kwargs):
+    stations_response = requests.get(*args, **kwargs)
     return stations_response
 
 
@@ -38,6 +38,18 @@ def retrieve_stations() -> dict:
 
 def retrieve_phenomena() -> dict:
     return _req_get(API_SOS_URL + "/phenomena").json()
+
+
+def retrieve_timeseries(id_sta, id_phen) -> dict:
+    req_url = API_SOS_URL + "/timeseries"
+    payload = {"station": id_sta, "phenomenon": id_phen}
+    return _req_get(req_url, params=payload).json()
+
+
+def retrieve_timeserie_data(id_ts: int, timespan: str = "") -> dict:
+    req_url = API_SOS_URL + "/timeseries" + f"/{id_ts}" + "/getData"
+    payload = {"timespan": timespan} if timespan else {}
+    return _req_get(req_url, params=payload).json()
 
 
 def read_stations():

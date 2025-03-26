@@ -7,6 +7,8 @@ from chimereceline.utils import (
     read_stations,
     retrieve_phenomena,
     retrieve_stations,
+    retrieve_timeserie_data,
+    retrieve_timeseries,
 )
 
 
@@ -29,6 +31,15 @@ def test_retrieve_phenomena():
     assert web_phenomena == file_phenomena, (
         "The saved phenomena are different than the API ones"
     )
+
+
+def test_retrieve_timeseries():
+    ts = retrieve_timeseries(1202, 391)
+    assert len(ts) == 1
+
+    id = ts[0]["id"]
+    data = retrieve_timeserie_data(id)
+    assert len(data) == 1, "The timeseries data could not be properly retrieved"
 
 
 # import json
