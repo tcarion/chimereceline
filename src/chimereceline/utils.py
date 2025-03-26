@@ -1,10 +1,9 @@
 import json
-from importlib.resources import files
 
 import requests
 from requests.exceptions import HTTPError
 
-from chimereceline.constants import API_SOS_URL
+from chimereceline.constants import API_SOS_URL, PHENOMENA_FILE, STATIONS_FILE
 
 
 def try_request(func):
@@ -28,14 +27,22 @@ def _req_get(url: str):
     return stations_response
 
 
+def _read_json(file):
+    rawdata = file.read_text(encoding="utf-8")
+    return json.loads(rawdata)
+
+
 def retrieve_stations() -> dict:
     return _req_get(API_SOS_URL + "/stations").json()
 
 
+def retrieve_phenomena() -> dict:
+    return _req_get(API_SOS_URL + "/phenomena").json()
+
+
 def read_stations():
-    rawdata = (
-        files("chimereceline.resources")
-        .joinpath("stations.json")
-        .read_text(encoding="utf-8")
-    )
-    return json.loads(rawdata)
+    return _read_json(STATIONS_FILE)
+
+
+def read_phenomena():
+    return _read_json(PHENOMENA_FILE)
