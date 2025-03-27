@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
 
+from chimereceline.collection import SosCollection
 from chimereceline.phenomena import Phenomenon
 from chimereceline.stations import Station
 from chimereceline.utils import retrieve_timeserie_data, retrieve_timeseries
@@ -32,6 +33,12 @@ class TimeSerie:
         self.id = int(data["id"])
         self.label = data["label"]
         self.uom = data["uom"]
+
+    @classmethod
+    def init_by_id(cls, coll: SosCollection, sta_id: int, phen_id: int):
+        s = coll.get_by_id(sta_id, "Station")
+        p = coll.get_by_id(phen_id, "Phenomenon")
+        return cls(s, p)
 
     def _retrieve_ts(self, id_sta: int, id_phen: int):
         ts = retrieve_timeseries(id_sta, id_phen)

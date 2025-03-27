@@ -1,5 +1,7 @@
 import datetime as dt
 
+import pytest
+
 from chimereceline.collection import SosCollection
 from chimereceline.stations import Station, generate_stations
 from chimereceline.timeseries import TimeSerie
@@ -24,6 +26,12 @@ def test_collection():
     coll = SosCollection()
     assert coll.search_station("Houtem")[0].id == 1202
     assert coll.search_phenomenon("Black Carbon")[0].id == 391
+
+    sta = coll.get_by_id(1202, "Station")
+    assert sta.location_name == "Houtem"
+
+    with pytest.raises(Exception):
+        coll.get_by_id(123456, "Station")
 
 
 def test_timeseries():
