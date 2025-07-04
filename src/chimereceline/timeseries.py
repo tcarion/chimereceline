@@ -41,10 +41,15 @@ class TimeSerie:
         return cls(s, p)
 
     def _retrieve_ts(self, id_sta: int, id_phen: int):
-        ts = retrieve_timeseries(id_sta, id_phen)
-        if len(ts) != 1:
+        response = retrieve_timeseries(id_sta, id_phen)
+        ts = response.json()
+        if len(ts) == 0:
             raise RuntimeError(
-                f"{len(ts)} timeserie products were retrieved. Only 1 timeserie data can be downloaded at once."
+                f"The timeserie response is empty for request: {response.url}"
+            )
+        if len(ts) > 1:
+            raise RuntimeError(
+                f"{len(ts)} timeserie products were retrieved for station.id={id_sta} and phen.id={id_phen}. Only 1 timeserie data can be downloaded at once."
             )
         return ts[0]
 
@@ -55,7 +60,7 @@ class TimeSerie:
         self, starttime: Optional[datetime] = None, endtime: Optional[datetime] = None
     ):
         if not starttime and not endtime:
-            r = retrieve_timeserie_data(self.id)
+            r = retrieve_timeserie_data(self.id).json()
         else:
             if not starttime:
                 raise RuntimeError(
@@ -66,7 +71,7 @@ class TimeSerie:
             # if no end datetime is provided, we consider the actual time
             strend = endtime.isoformat() if endtime else datetime.now().isoformat()
             timespan = strstart + "/" + strend
-            r = retrieve_timeserie_data(self.id, timespan)
+            r = retrieve_timeserie_data(self.id, timespan).json()
 
         data = r["values"]
 

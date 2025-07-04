@@ -32,24 +32,36 @@ def _read_json(file):
     return json.loads(rawdata)
 
 
-def retrieve_stations() -> dict:
-    return _req_get(API_SOS_URL + "/stations").json()
+def retrieve_stations() -> requests.Response:
+    return _req_get(API_SOS_URL + "/stations")
 
 
-def retrieve_phenomena() -> dict:
-    return _req_get(API_SOS_URL + "/phenomena").json()
+def retrieve_phenomena() -> requests.Response:
+    return _req_get(API_SOS_URL + "/phenomena")
 
 
-def retrieve_timeseries(id_sta, id_phen) -> dict:
-    req_url = API_SOS_URL + "/timeseries"
-    payload = {"station": id_sta, "phenomenon": id_phen}
-    return _req_get(req_url, params=payload).json()
+def _make_timeseries_req(id_sta: int, id_phen: int) -> dict:
+    return {
+        "url": API_SOS_URL + "/timeseries",
+        "payload": {"station": id_sta, "phenomenon": id_phen},
+    }
 
 
-def retrieve_timeserie_data(id_ts: int, timespan: str = "") -> dict:
-    req_url = API_SOS_URL + "/timeseries" + f"/{id_ts}" + "/getData"
-    payload = {"timespan": timespan} if timespan else {}
-    return _req_get(req_url, params=payload).json()
+def retrieve_timeseries(id_sta: int, id_phen: int) -> requests.Response:
+    req = _make_timeseries_req(id_sta, id_phen)
+    return _req_get(req["url"], params=req["payload"])
+
+
+def _make_timeseries_data_req(id_ts: int, timespan: str) -> dict:
+    return {
+        "url": API_SOS_URL + "/timeseries" + f"/{id_ts}" + "/getData",
+        "payload": {"timespan": timespan} if timespan else {},
+    }
+
+
+def retrieve_timeserie_data(id_ts: int, timespan: str = "") -> requests.Response:
+    req = _make_timeseries_data_req(id_ts, timespan)
+    return _req_get(req["url"], params=req["payload"])
 
 
 def read_stations():
